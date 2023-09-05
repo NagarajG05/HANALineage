@@ -494,7 +494,7 @@ if __name__ == '__main__':
     object_name 
 
     from "_SYS_REPO"."ACTIVE_OBJECT" 
-    where (package_id like 'ILMN.%P2D%' or package_id like 'ILMN.%P2P%')
+    where package_id like '%PKG%' 
     and object_name like '%_QV'
     '''
     HANA_wa_list = ['PACKAGENAME','VIEWNAME','TARGETCOLUMN','MAPPING','META_CRT_DT']
@@ -513,7 +513,7 @@ if __name__ == '__main__':
             column_query = file.read()
             column_query = column_query.replace('!viewPath!', viewPath)
 
-        # cc = dataframe.ConnectionContext('analyticsqas.illumina.com', 30041, 'ngumatima1')
+       
         if view_query is not None:
             hdf_view = cc.sql(view_query)
             df_all_view_xml = hdf_view.collect()
@@ -594,4 +594,3 @@ if __name__ == '__main__':
 
 
     print('\n', 'done')
-
