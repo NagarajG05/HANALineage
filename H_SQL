@@ -14,7 +14,7 @@ distinct
 "PackageName" as Package_id,
 "CalculationView/TableFunction" as object_name
 from
-"CSTM_ILMN_P2D"."ILMN.P2D.DB::DependencyObjectList_TF"('!viewPath!')
+"DependencyObjectList_TF"('!viewPath!')
 union all
 
 select
@@ -23,7 +23,7 @@ distinct
 "BaseObjectName" as object_name
 
 from
-"CSTM_ILMN_P2D"."ILMN.P2D.DB::DependencyObjectList_TF"('!viewPath!')
+"DependencyObjectList_TF"('!viewPath!')
 where "BaseObjectType" = 'Calculation View'
 
 )
