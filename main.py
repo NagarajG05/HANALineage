@@ -431,16 +431,7 @@ def parse_view_semantic(df_all_views_xml, p_parentView, p_parentPackage):
         view_semantic_df.reset_index()
         for row in view_semantic_df.itertuples(index=True, name='Pandas'):
 
-            # global Final_columns_df
-            # global Final_columns_dict
-            # Final_columns_dict['targetColumn'] = getattr(row, 'targetColumn')
-            # Final_columns_df = Final_columns_df.append(Final_columns_dict, ignore_index=True)
-            # # Final_columns_dict = dict((k, None) for k in Final_columns_dict)
-            # Final_columns_dict['targetColumn'] = None
-            # Final_columns_dict['Mapping'] = None
-            # Final_columns_dict['schemaName'] = None
-            # Final_columns_dict['table'] = None
-            # Final_columns_dict['tableField'] = None
+           
 
 
             if getattr(row, 'isCalcColumn')== 'Yes':
@@ -494,13 +485,8 @@ def display_menu():
 
 if __name__ == '__main__':
     warnings.filterwarnings("ignore", category=FutureWarning)
-    # HANA_SQL_SCRIPT = ''' upsert "NGUMATIMA1"."LINEAGE" ("PACKAGENAME",
-    # "VIEWNAME",
-    # "TARGETCOLUMN",
-    # "MAPPING",
-    # "META_CRT_DT") values(?,?,?,?,?)  WITH PRIMARY KEY
-    # '''
-    HANA_SQL_SCRIPT = ''' upsert "CSTM_ILMN_P2D"."LINEAGE" ("MAPPING","META_CRT_DT","PACKAGENAME","TARGETCOLUMN","VIEWNAME") values(?,?,?,?,?)   WITH PRIMARY KEY  '''
+   
+    HANA_SQL_SCRIPT = ''' upsert "LINEAGE" ("MAPPING","META_CRT_DT","PACKAGENAME","TARGETCOLUMN","VIEWNAME") values(?,?,?,?,?)   WITH PRIMARY KEY  '''
 
     view_query = '''
     select distinct
@@ -514,8 +500,8 @@ if __name__ == '__main__':
     HANA_wa_list = ['PACKAGENAME','VIEWNAME','TARGETCOLUMN','MAPPING','META_CRT_DT']
     HANA_wa_dict = {key: None for key in HANA_wa_list}
     # df_hana = pd.DataFrame()
-    cc = dataframe.ConnectionContext('analyticsdev.illumina.com', 30041, 'ngumatima1','DevABC#9797')
-    # cc = dataframe.ConnectionContext('analyticsdev.illumina.com', 30041,"","")
+    cc = dataframe.ConnectionContext('host', 30041, 'user','password')
+    
 
     def start_lineage(p_path):
         global df_all_view_xml
@@ -605,62 +591,6 @@ if __name__ == '__main__':
             sys.exit(0)
 
 
-    # packageName = str(input('Enter HANA Package Name: '))
-    # packageName = packageName.replace(' ', '')
-    # viewName = str(input('Enter HANA View Name: '))
-    # viewName = viewName.replace(' ', '')
-    # viewPath = packageName + '/' + viewName
-
-    #     with open(r'H_SQL', 'r') as file:
-    #         view_query = file.read()
-    #         view_query = view_query.replace('!viewPath!', viewPath)
-    #     with open(r'Column_query', 'r') as file:
-    #         column_query = file.read()
-    #         column_query = column_query.replace('!viewPath!', viewPath)
-    #
-    #     # cc = dataframe.ConnectionContext('analyticsqas.illumina.com', 30041, 'ngumatima1', 'NGqas#2597')
-    #     if view_query is not None:
-    #         hdf_view = cc.sql(view_query)
-    #         df_all_view_xml = hdf_view.collect()
-    #         # pd.options.display.width = None
-    #         # print(df_all_view_xml)
-    #         # with pd.option_context('expand_frame_repr', False, 'display.max_rows', None):
-    #         #     print(df_all_view_xml)
-    #
-    #     else:
-    #         print('sql query has issue')
-    #         sys.exit(0)
-    #
-    #     if column_query is not None:
-    #         hdf_col = cc.sql(column_query)
-    #         df_col = hdf_col.collect()
-    #     else:
-    #         print('sql query has issue')
-    #         sys.exit(0)
-    #     # cc.connection.close()
-    #
-    #     df_final = parse_view_semantic(df_all_views_xml=df_all_view_xml, p_parentPackage=packageName, p_parentView=viewName)
-    #     print(tabulate(df_final, headers='keys', tablefmt='psql'))
-    #     print('*********')
-    #     for row in df_final.itertuples(index=True, name='Pandas'):
-    #         HANA_wa_dict['PACKAGENAME']= packageName
-    #         HANA_wa_dict['VIEWNAME']=viewName
-    #         HANA_wa_dict['TARGETCOLUMN']=getattr(row, 'targetColumn')
-    #         if getattr(row, 'isCalcColumn') is None or getattr(row, 'isCalcColumn')=='':
-    #            HANA_wa_dict['MAPPING']=getattr(row, 'Mapping')
-    #         else:
-    #            HANA_wa_dict['MAPPING'] = getattr(row, 'formula')
-    #         HANA_wa_dict['META_CRT_DT']=datetime.datetime.now()
-    #         df_hana = df_hana.append(HANA_wa_dict, ignore_index=True)
-    #         # df_hana = pd.concat([df_hana,HANA_wa_dict], ignore_index=True)
-    #
-    #     print(tabulate(df_hana, headers='keys', tablefmt='psql'))
-    #
-    # ###--- Insert data into HANA table
-    #     hana_cur = cc.connection.cursor()
-    #     chunk = df_hana.iloc[0: 1000].values.tolist()
-    #     tuple_of_tuples = list(tuple(x) for x in chunk)
-    #     hana_cur.executemany(HANA_SQL_SCRIPT, tuple_of_tuples)
 
 
     print('\n', 'done')
