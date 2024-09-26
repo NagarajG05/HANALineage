@@ -485,6 +485,8 @@ def display_menu():
 
 if __name__ == '__main__':
     warnings.filterwarnings("ignore", category=FutureWarning)
+
+    # Make sure to create table in the database(HANA) to store the lineage
    
     HANA_SQL_SCRIPT = ''' upsert "LINEAGE" ("MAPPING","META_CRT_DT","PACKAGENAME","TARGETCOLUMN","VIEWNAME") values(?,?,?,?,?)   WITH PRIMARY KEY  '''
 
